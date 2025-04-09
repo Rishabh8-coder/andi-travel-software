@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Backup Database Management</title>
+  <style>
+    /* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+header {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+main {
+  padding: 20px;
+}
+
+h2, h3 {
+  color: #333;
+}
+
+/* Instructions Section */
+.instructions {
+  background: #eaf3ff;
+  border: 1px solid #0078d7;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+code {
+  color: #ff4500;
+}
+
+/* Action Buttons */
+.actions button {
+  margin: 10px 0;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.reset-button {
+  background-color: #ffa500;
+  color: white;
+}
+
+.backup-button {
+  background-color: #4CAF50;
+  color: white;
+}
+
+/* Form Styles */
+form {
+  margin-bottom: 20px;
+}
+
+input[type="file"] {
+  margin-bottom: 10px;
+}
+
+/* Backup Log */
+.backup-log {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+/* Footer */
+footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px;
+}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Database Backup Management</h1>
+  </header>
+  <main>
+    <section class="instructions">
+      <p>Store your backups safely in the <code>/backups/</code> folder located at the root of the script files.</p>
+      <p>Frequent backups are recommended to ensure data security.</p>
+    </section>
+    <section class="actions">
+      <h2>Manage Backups</h2>
+      <form id="backup-form">
+        <label for="upload-file">Choose a file to upload:</label>
+        <input type="file" id="upload-file" name="upload-file">
+        <button type="submit">Upload</button>
+      </form>
+      <button class="reset-button">Reset Database</button>
+      <button class="backup-button">Create Backup</button>
+    </section>
+    <section class="backup-log">
+      <h3>Backup History</h3>
+      <p>No backups created yet.</p>
+    </section>
+  </main>
+  <footer>
+    <p>© 2025 Database Backup Management System. All Rights Reserved.</p>
+  </footer>
+</body>
+</html>

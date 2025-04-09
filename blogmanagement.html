@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Management Dashboard</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            overflow-x: hidden;
+        }
+        
+        /* Dashboard Layout */
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            width: 220px;
+            background-color: #2c3e50;
+            color: white;
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .sidebar-header h2 {
+            margin-left: 10px;
+            font-size: 18px;
+        }
+        
+        .search-container {
+            padding: 10px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        
+        .user-info {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-info i {
+            margin-right: 10px;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .sidebar-menu li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .sidebar-menu li a:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        .sidebar-menu li a.active {
+            background-color: #3498db;
+            border-left: 4px solid #2ecc71;
+        }
+        
+        .has-submenu {
+            position: relative;
+        }
+        
+        .has-submenu::after {
+            content: '›';
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+        }
+        
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            margin-left: 220px;
+            padding: 20px;
+        }
+        
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fff;
+            padding: 10px 20px;
+            border-bottom: 1px solid #ddd;
+            margin: -20px -20px 20px -20px;
+        }
+        
+        .menu-toggle {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .date-display {
+            color: #777;
+            font-size: 14px;
+        }
+        
+        .dropdown-toggle {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        
+        /* Blog Management Styles */
+        .content-header {
+            margin-bottom: 20px;
+        }
+        
+        .content-header h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .add-btn {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 3px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .add-btn i {
+            margin-right: 5px;
+        }
+        
+        .export-options {
+            display: flex;
+        }
+        
+        .export-btn {
+            background-color: #f1f1f1;
+            border: 1px solid #ddd;
+            padding: 8px 15px;
+            margin-left: 5px;
+            border-radius: 3px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .export-btn i {
+            margin-right: 5px;
+        }
+        
+        /* Table Styles */
+        .table-container {
+            background-color: #fff;
+            border-radius: 3px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }
+        
+        .blog-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .blog-table th {
+            background-color: #f9f9f9;
+            text-align: left;
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .blog-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            color: #555;
+        }
+        
+        .blog-table tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .checkbox-cell {
+            width: 40px;
+            text-align: center;
+        }
+        
+        .order-input {
+            width: 60px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            text-align: center;
+        }
+        
+        .status-yes {
+            color: #2ecc71;
+            font-weight: bold;
+        }
+        
+        .action-buttons {
+            display: flex;
+        }
+        
+        .edit-btn, .delete-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 5px;
+            cursor: pointer;
+            color: white;
+        }
+        
+        .edit-btn {
+            background-color: #f39c12;
+        }
+        
+        .delete-btn {
+            background-color: #e74c3c;
+        }
+        
+        .thumb-image {
+            width: 60px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 2px;
+        }
+        
+        /* Pagination Styles */
+        .pagination-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            align-items: center;
+        }
+        
+        .pagination {
+            display: flex;
+        }
+        
+        .pagination button {
+            padding: 8px 15px;
+            margin: 0 2px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            cursor: pointer;
+        }
+        
+        .pagination button.active {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+        
+        .pagination button:hover:not(.active) {
+            background-color: #f5f5f5;
+        }
+        
+        .execution-info {
+            color: #777;
+            font-size: 12px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 60px;
+                overflow: hidden;
+            }
+            
+            .sidebar-header h2, .user-info span, .sidebar-menu li a span, .has-submenu::after {
+                display: none;
+            }
+            
+            .sidebar-menu li a i {
+                margin-right: 0;
+            }
+            
+            .main-content {
+                margin-left: 60px;
+            }
+            
+            .search-container, .user-info {
+                padding: 10px 5px;
+            }
+            
+            .blog-table th:nth-child(4), .blog-table td:nth-child(4),
+            .blog-table th:nth-child(5), .blog-table td:nth-child(5) {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-tachometer-alt"></i>
+                <h2>Dashboard</h2>
+            </div>
+            
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search">
+            </div>
+            
+            <div class="user-info">
+                <i class="fas fa-user"></i>
+                <span>Super Admin Admin</span>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="#" class="active">
+                        <i class="fas fa-desktop"></i>
+                        <span>Frontend</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="has-submenu">
+                        <i class="fas fa-cog"></i>
+                        <span>General</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="has-submenu">
+                        <i class="fas fa-users"></i>
+                        <span>Accounts</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="has-submenu">
+                        <i class="fas fa-file-alt"></i>
+                        <span>CMS</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="has-submenu">
+                        <i class="fas fa-blog"></i>
+                        <span>Blog</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="has-submenu">
+                        <i class="fas fa-car"></i>
+                        <span>Cars</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="has-submenu">
+                        <i class="fas fa-hotel"></i>
+                        <span>Hotels</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="has-submenu">
+                        <i class="fas fa-route"></i>
+                        <span>Tours</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="has-submenu">
+                        <i class="fas fa-gift"></i>
+                        <span>Offers</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="has-submenu">
+                        <i class="fas fa-tags"></i>
+                        <span>Coupons</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="has-submenu">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Locations</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="has-submenu">
+                        <i class="fas fa-envelope"></i>
+                        <span>Newsletter</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="has-submenu">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Bookings</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header-bar">
+                <button class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <span class="date-display">13:13:01 | 9 April 2025</span>
+                <button class="dropdown-toggle">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+            
+            <div class="content-header">
+                <h1>Blog Management</h1>
+            </div>
+            
+            <div class="action-bar">
+                <button class="add-btn">
+                    <i class="fas fa-plus-circle"></i> Add
+                </button>
+                <div class="export-options">
+                    <button class="export-btn">
+                        <i class="fas fa-print"></i> Print
+                    </button>
+                    <button class="export-btn">
+                        <i class="fas fa-file-export"></i> Export into CSV
+                    </button>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table class="blog-table">
+                    <thead>
+                        <tr>
+                            <th class="checkbox-cell"><input type="checkbox"></th>
+                            <th>#</th>
+                            <th>Thumb</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Date</th>
+                            <th>Order</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="checkbox-cell"><input type="checkbox"></td>
+                            <td>1</td>
+                            <td><img src="/api/placeholder/100/60" alt="Beach" class="thumb-image"></td>
+                            <td>Virgin Gorda beaches and lobste</td>
+                            <td>Things to do</td>
+                            <td>17/12/2014</td>
+                            <td><input type="text" class="order-input" value="8"></td>
+                            <td class="status-yes">Yes</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <div class="edit-btn"><i class="fas fa-edit"></i></div>
+                                    <div class="delete-btn"><i class="fas fa-times"></i></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="checkbox-cell"><input type="checkbox"></td>
+                            <td>2</td>
+                            <td><img src="/api/placeholder/100/60" alt="Culture" class="thumb-image"></td>
+                            <td>Fiercely Independent Cultures</td>
+                            <td>Things to do</td>
+                            <td>17/12/2014</td>
+                            <td><input type="text" class="order-input" value="17"></td>
+                            <td class="status-yes">Yes</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <div class="edit-btn"><i class="fas fa-edit"></i></div>
+                                    <div class="delete-btn"><i class="fas fa-times"></i></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="checkbox-cell"><input type="checkbox"></td>
+                            <td>3</td>
+                            <td><img src="/api/placeholder/100/60" alt="Train" class="thumb-image"></td>
+                            <td>Peace Train A Long Time Coming</td>
+                            <td>Adventure</td>
+                            <td>17/12/2014</td>
+                            <td><input type="text" class="order-input" value="16"></td>
+                            <td class="status-yes">Yes</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <div class="edit-btn"><i class="fas fa-edit"></i></div>
+                                    <div class="delete-btn"><i class="fas fa-times"></i></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="checkbox-cell"><input type="checkbox"></td>
+                            <td>4</td>
+                            <td><img src="/api/placeholder/100/60" alt="South Africa" class="thumb-image"></td>
+                            <td>South Africa: A Terminal Tyre</td>
+                            <td>Adventure</td>
+                            <td>17/12/2014</td>
+                            <td><input type="text" class="order-input" value="15"></td>
+                            <td class="status-yes">Yes</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <div class="edit-btn"><i class="fas fa-edit"></i></div>
+                                    <div class="delete-btn"><i class="fas fa-times"></i></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="checkbox-cell"><input type="checkbox"></td>
+                            <td>5</td>
+                            <td><img src="/api/placeholder/100/60" alt="Rain" class="thumb-image"></td>
+                            <td>It Wasn't Supposed to Rain</td>
+                            <td>Adventure</td>
+                            <td>17/12/2014</td>
+                            <td><input type="text" class="order-input" value="14"></td>
+                            <td class="status-yes">Yes</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <div class="edit-btn"><i class="fas fa-edit"></i></div>
+                                    <div class="delete-btn"><i class="fas fa-times"></i></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="checkbox-cell"><input type="checkbox"></td>
+                            <td>6</td>
+                            <td><img src="/api/placeholder/100/60" alt="Sri Lanka" class="thumb-image"></td>
+                            <td>Graphic Tour Sri Lanka</td>
+                            <td>Adventure</td>
+                            <td>17/12/2014</td>
+                            <td><input type="text" class="order-input" value="13"></td>
+                            <td class="status-yes">Yes</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <div class="edit-btn"><i class="fas fa-edit"></i></div>
+                                    <div class="delete-btn"><i class="fas fa-times"></i></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="checkbox-cell"><input type="checkbox"></td>
+                            <td>7</td>
+                            <td><img src="/api/placeholder/100/60" alt="Egypt" class="thumb-image"></td>
+                            <td>Masra Matruh Egypt</td>
+                            <td>Adventure</td>
+                            <td>17/12/2014</td>
+                            <td><input type="text" class="order-input" value="13"></td>
+                            <td class="status-yes">Yes</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <div class="edit-btn"><i class="fas fa-edit"></i></div>
+                                    <div class="delete-btn"><i class="fas fa-times"></i></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="checkbox-cell"><input type="checkbox"></td>
+                            <td>8</td>
+                            <td><img src="/api/placeholder/100/60" alt="Villa" class="thumb-image"></td>
+                            <td>Paradise Search Villa Extramoros</td>
+                            <td>Adventure</td>
+                            <td>17/12/2014</td>
+                            <td><input type="text" class="order-input" value="11"></td>
+                            <td class="status-yes">Yes</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <div class="edit-btn"><i class="fas fa-edit"></i></div>
+                                    <div class="delete-btn"><i class="fas fa-times"></i></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="checkbox-cell"><input type="checkbox"></td>
+                            <td>9</td>
+                            <td><img src="/api/placeholder/100/60" alt="Fashion" class="thumb-image"></td>
+                            <td>The Art Of Fashion</td>
+                            <td>Shopping and Fashion</td>
+                            <td>17/12/2014</td>
+                            <td><input type="text" class="order-input" value="10"></td>
+                            <td class="status-yes">Yes</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <div class="edit-btn"><i class="fas fa-edit"></i></div>
+                                    <div class="delete-btn"><i class="fas fa-times"></i></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="checkbox-cell"><input type="checkbox"></td>
+                            <td>10</td>
+                            <td><img src="/api/placeholder/100/60" alt="Weekend" class="thumb-image"></td>
+                            <td>Things To Do This Weekend</td>
+                            <td>Things to do</td>
+                            <td>17/12/2014</td>
+                            <td><input type="text" class="order-input" value="9"></td>
+                            <td class="status-yes">Yes</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <div class="edit-btn"><i class="fas fa-edit"></i></div>
+                                    <div class="delete-btn"><i class="fas fa-times"></i></div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="pagination-container">
+                <div class="pagination">
+                    <button>10</button>
+                    <button>25</button>
+                    <button>50</button>
+                    <button>100</button>
+                    <button>All</button>
+                    <button class="active">1</button>
+                    <button>2</button>
+                    <button>Search</button>
+                </div>
+                <div class="execution-info">
+                    Execution time: 0.045 s · Memory usage: 0.27 MB
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Font Awesome for icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+    
+    <script>
+        // JavaScript for basic functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle sidebar on menu button click (for mobile)
+            const menuToggle = document.querySelector('.menu-toggle');
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main-content');
+            
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) {
+                        if (sidebar.style.width === '220px' || sidebar.style.width === '') {
+                            sidebar.style.width = '60px';
+                            mainContent.style.marginLeft = '60px';
+                        } else {
+                            sidebar.style.width = '220px';
+                            mainContent.style.marginLeft = '220px';
+                        }
+                    }
+                });
+            }
+            
+            // Update current date and time
+            function updateDateTime() {
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+                const day = String(now.getDate()).padStart(2, '0');
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const year = now.getFullYear();
+                
+                const dateDisplay = document.querySelector('.date-display');
+                if (dateDisplay) {
+                    dateDisplay.textContent = `${hours}:${minutes}:${seconds} | ${day} April ${year}`;
+                }
+            }
+            
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+            
+            // Event listeners for actions (demo functionality)
+            const addBtn = document.querySelector('.add-btn');
+            if (addBtn) {
+                addBtn.addEventListener('click', function() {
+                    alert('Add new blog post functionality would go here');
+                });
+            }
+            
+            const printBtn = document.querySelector('.export-options button:first-child');
+            if (printBtn) {
+                printBtn.addEventListener('click', function() {
+                    alert('Print functionality would go here');
+                });
+            }
+            
+            const exportBtn = document.querySelector('.export-options button:last-child');
+            if (exportBtn) {
+                exportBtn.addEventListener('click', function() {
+                    alert('Export to CSV functionality would go here');
+                });
+            }
+            
+            // Add click event to edit and delete buttons
+            const editBtns = document.querySelectorAll('.edit-btn');
+            editBtns.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    const row = this.closest('tr');
+                    const title = row.querySelector('td:nth-child(4)').textContent;
+                    alert(`Edit blog post: ${title}`);
+                });
+            });
+            
+            const deleteBtns = document.querySelectorAll('.delete-btn');
+            deleteBtns.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    const row = this.closest('tr');
+                    const title = row.querySelector('td:nth-child(4)').textContent;
+                    if (confirm(`Are you sure you want to delete the post: ${title}?`)) {
+                        row.remove();
+                    }
+                });
+            });
+            
+            // Pagination demo functionality
+            const paginationBtns = document.querySelectorAll('.pagination button');
+            paginationBtns.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    paginationBtns.forEach(b => b.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    if (this.textContent === 'Search') {
+                        alert('Search functionality would go here');
+                    } else {
+                        alert(`Showing ${this.textContent} items per page`);
+                    }
+                });
+            });
+            
+            // Select all checkboxes functionality
+            const selectAllCheckbox = document.querySelector('thead .checkbox-cell input');
+            const rowCheckboxes = document.querySelectorAll('tbody .checkbox-cell input');
+            
+            if (selectAllCheckbox) {
+                selectAllCheckbox.addEventListener('change', function() {
+                    rowCheckboxes.forEach(checkbox => {
+                        checkbox.checked = this.checked;
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

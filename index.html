@@ -1,0 +1,1754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TravelEase - Your Complete Travel Solution</title>
+    <style>
+        :root {
+    --primary: #3498db;
+    --secondary: #2ecc71;
+    --danger: #e74c3c;
+    --warning: #f39c12;
+    --dark: #34495e;
+    --light: #ecf0f1;
+    --gray: #95a5a6;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f5f7fa;
+    overflow-x: hidden;
+}
+
+/* Step 1: Update container structure for fixed sidebar layout */
+.container {
+    display: flex;
+    min-height: 100vh;
+    position: relative; /* Add position relative to container */
+}
+
+/* Step 2: Fix the sidebar positioning */
+.sidebar {
+    width: 220px;
+    background-color: #2d3748;
+    color: white;
+    overflow-y: auto;
+    position: fixed; /* Fix the sidebar */
+    top: 0;
+    left: 0;
+    height: 100vh; /* Make it full height */
+    z-index: 100; /* Ensure sidebar appears above other content */
+}
+
+.sidebar-header {
+    padding: 15px 20px;
+    background-color: #1a202c;
+    border-bottom: 1px solid #4a5568;
+}
+
+.sidebar-header h2 {
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-header h2 i {
+    margin-right: 10px;
+}
+
+.search-bar {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 3px;
+    background-color: #1a202c;
+    color: white;
+    border: none;
+    width: calc(100% - 20px);
+}
+
+.search-bar::placeholder {
+    color: #a0aec0;
+}
+
+.user-info {
+    padding: 15px 20px;
+    border-bottom: 1px solid #4a5568;
+    display: flex;
+    align-items: center;
+}
+
+.user-info i {
+    margin-right: 10px;
+}
+
+.sidebar-menu {
+    padding: 10px 0;
+}
+
+.menu-item {
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.menu-item:hover {
+    background-color: #4a5568;
+}
+
+.menu-item.active {
+    background-color: #3182ce;
+}
+
+.menu-item i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+.menu-item span {
+    flex-grow: 1;
+}
+
+.submenu-toggle {
+    margin-left: auto;
+}
+
+/* Step 3: Adjust main content to accommodate fixed sidebar */
+.main-content {
+    flex: 1;
+    overflow-y: auto;
+    margin-left: 220px; /* Add margin equal to sidebar width */
+    width: calc(100% - 220px); /* Set width to adjust for sidebar */
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.hamburger {
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.date-time {
+    color: #777;
+}
+
+.date-time {
+    color: var(--gray);
+}
+/* Quick Action Buttons */
+.quick-actions {
+    display: flex;
+    gap: 10px;
+    padding: 20px;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    padding: 15px;
+    border-radius: 5px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 150px;
+    text-decoration: none;
+    transition: all 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.action-btn i {
+    margin-right: 10px;
+}
+
+.action-btn.primary {
+    background-color: var(--primary);
+}
+
+.action-btn.secondary {
+    background-color: var(--secondary);
+}
+
+.action-btn.warning {
+    background-color: var(--warning);
+}
+
+.action-btn.danger {
+    background-color: var(--danger);
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.dashboard-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 0 20px;
+    margin-bottom: 20px;
+}
+
+.stat-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    min-width: 300px;
+}
+
+.stat-card h3 {
+    margin-bottom: 20px;
+    color: var(--dark);
+    font-size: 18px;
+}
+
+.stat-circle {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 20px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-circle svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.stat-circle-value {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.stat-details {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.stat-details .paid {
+    color: var(--secondary);
+}
+
+.stat-details .unpaid {
+    color: var(--danger);
+}
+
+/* Revenue Overview */
+.dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+}
+
+.period-selector {
+    display: flex;
+    gap: 10px;
+}
+
+.period-btn {
+    padding: 8px 16px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.period-btn.active {
+    background-color: #4a6cf7;
+    color: white;
+    border-color: #4a6cf7;
+}
+
+.period-btn:hover:not(.active) {
+    background-color: #f0f0f0;
+}
+
+.chart-container {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+.revenue-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.revenue-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.card-label {
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.card-value {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+}
+
+.trend {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+}
+
+.trend.up {
+    color: #10b981;
+}
+
+.trend.down {
+    color: #ef4444;
+}
+
+.sources-container {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.sources-title {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.source-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.source-name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.source-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.source-value {
+    font-weight: 500;
+}
+
+/* recent Bookings */
+.bookings-table {
+    padding: 20px;
+    background-color: white;
+    margin: 0 20px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+}
+
+.bookings-table h3 {
+    margin-bottom: 20px;
+    color: var(--dark);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e1e5ea;
+}
+
+table th {
+    background-color: #f8f9fa;
+    color: var(--dark);
+    font-weight: 600;
+}
+
+table tbody tr:hover {
+    background-color: #f1f4f7;
+}
+
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: white;
+    display: inline-block;
+}
+
+.status-paid {
+    background-color: var(--secondary);
+}
+
+.status-unpaid {
+    background-color: var(--primary);
+}
+
+.status-cancelled {
+    background-color: var(--danger);
+}
+
+.action-icons {
+    display: flex;
+    gap: 10px;
+}
+
+.action-icons a {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.action-icons a:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.action-icons a.view {
+    color: var(--primary);
+}
+
+.action-icons a.edit {
+    color: var(--warning);
+}
+
+.action-icons a.delete {
+    color: var(--danger);
+}
+
+.pagination {
+    display: flex;
+    gap: 5px;
+    margin-top: 20px;
+}
+
+.pagination button {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    background-color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.pagination button:hover {
+    background-color: #f1f4f7;
+}
+
+.pagination button.active {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.stats-chart-container {
+    padding: 20px;
+    background-color: white;
+    margin: 0 20px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Visit Statistics of April */
+:root {
+    --primary-bg: #2c3e50;
+    --secondary-bg: #f5f5f5;
+    --border-color: #ddd;
+    --unique-color: #3498db;
+    --total-color: #34495e;
+    --paid-color: #2ecc71;
+    --unpaid-color: #3498db;
+    --cancelled-color: #e74c3c;
+}
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+.dashboard-header {
+    background-color: var(--primary-bg);
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 5px 5px 0 0;
+}
+
+.dashboard-title {
+    margin: 0;
+    font-size: 20px;
+}
+
+.timestamp {
+    font-size: 14px;
+}
+
+/* Step 4: Updated dashboard sidebar to align with fixed sidebar */
+.dashboard-sidebar {
+    background-color: var(--primary-bg);
+    color: white;
+    width: 220px;
+    position: fixed; /* Make this fixed as well */
+    height: 100vh;
+    left: 0;
+    top: 0;
+    overflow-y: auto;
+    padding-top: 60px;
+    z-index: 90; /* Ensure proper stacking */
+}
+
+.sidebar-item {
+    padding: 12px 15px;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-item.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-left-color: #3498db;
+}
+
+.sidebar-icon {
+    margin-right: 10px;
+    width: 18px;
+}
+
+/* Step 5: Update dashboard content to account for fixed sidebar */
+.dashboard-content {
+    margin-left: 220px; /* Match sidebar width */
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.bookings-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.bookings-table th,
+.bookings-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.bookings-table th {
+    background-color: #f5f5f5;
+    font-weight: 600;
+}
+
+.bookings-table tr:hover {
+    background-color: #f9f9f9;
+}
+
+.status-badge {
+    padding: A 12px;
+    border-radius: 4px;
+    color: white;
+    font-size: 13px;
+    text-align: center;
+    display: block;
+}
+
+.status-paid {
+    background-color: var(--paid-color);
+}
+
+.status-unpaid {
+    background-color: var(--unpaid-color);
+}
+
+.status-cancelled {
+    background-color: var(--cancelled-color);
+}
+
+.pagination {
+    display: flex;
+    padding: 15px;
+    justify-content: center;
+}
+
+.pagination-item {
+    padding: 8px 12px;
+    margin: 0 3px;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    background-color: white;
+}
+
+.pagination-item.active {
+    background-color: #f5f5f5;
+    font-weight: bold;
+}
+
+.chart-container {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.chart-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.reset-btn {
+    background-color: var(--cancelled-color);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.chart-body {
+    height: 350px;
+}
+
+.legend {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+    font-size: 13px;
+}
+
+.legend-color {
+    width: 15px;
+    height: 15px;
+    margin-right: 5px;
+}
+
+.legend-color.unique {
+    background-color: var(--unique-color);
+}
+
+.legend-color.total {
+    background-color: var(--total-color);
+}
+
+.chart-svg {
+    width: 100%;
+    height: 100%;
+}
+
+.y-axis line, .x-axis line {
+    stroke: #ddd;
+}
+
+.y-axis path, .x-axis path {
+    stroke: #ddd;
+}
+
+.y-axis text, .x-axis text {
+    font-size: 12px;
+    fill: #666;
+}
+
+.bar-unique {
+    fill: var(--unique-color);
+}
+
+.bar-total {
+    fill: var(--total-color);
+}
+
+.bar-value {
+    font-size: 11px;
+    fill: #333;
+    text-anchor: middle;
+}
+
+.axis-label {
+    font-size: 13px;
+    fill: #666;
+    text-anchor: middle;
+}
+
+.execution-info {
+    font-size: 12px;
+    color: #777;
+    text-align: right;
+    margin-top: 5px;
+}
+
+/* Step 6: Update responsive design for the fixed sidebar layout */
+@media (max-width: 992px) {
+    .sidebar, .dashboard-sidebar {
+        width: 70px;
+    }
+    
+    .sidebar-header h2,
+    .user-info span {
+        display: none;
+    }
+    
+    .search-bar,
+    .menu-item span {
+        display: none;
+    }
+    
+    .menu-item i {
+        margin-right: 0;
+    }
+    
+    .menu-item {
+        justify-content: center;
+        padding: 12px 0;
+    }
+    
+    /* Adjust main content margins */
+    .main-content,
+    .dashboard-content {
+        margin-left: 70px;
+        width: calc(100% - 70px);
+    }
+}
+
+/* Step 7: Mobile view with toggleable sidebar */
+@media (max-width: 768px) {
+    .sidebar, .dashboard-sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+    
+    .sidebar.active, .dashboard-sidebar.active {
+        transform: translateX(0);
+    }
+    
+    .main-content,
+    .dashboard-content {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    .quick-actions {
+        justify-content: center;
+    }
+    
+    .action-btn {
+        flex: 1;
+        min-width: calc(50% - 10px);
+    }
+    
+    .stat-card {
+        min-width: 100%;
+    }
+    
+    /* Mobile specific dashboard adjustments */
+    .chart-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .reset-btn {
+        margin-top: 10px;
+    }
+    
+    .bookings-table {
+        font-size: 13px;
+    }
+    
+    .bookings-table th,
+    .bookings-table td {
+        padding: 8px;
+    }
+    
+    .legend {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .legend-item {
+        margin: 5px 10px;
+    }
+    
+    .chart-body {
+        height: 300px;
+    }
+}
+
+/* Step 8: Add toggle functionality classes */
+.sidebar-toggle {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    top: 15px;
+    left: 15px;
+    cursor: pointer;
+    background-color: var(--primary);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+    .sidebar-toggle {
+        display: flex;
+    }
+}
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h2><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
+                </div>
+                <input type="text" class="search-bar" placeholder="Search">
+                <div class="user-info">
+                    <i class="fas fa-user"></i>
+                    <span>Super Admin Admin</span>
+                </div>
+                <div class="sidebar-menu">
+                    <div class="menu-item active">
+                        <i class="fas fa-desktop"></i>
+                        <span>Frontend</span>
+                    </div>
+                    <div class="menu-item" onclick="window.location.href='general.html'">
+                        <i class="fas fa-cog"></i>
+                        <span>General</span>
+                        <span></span>
+                        <i class="fas fa-chevron-right submenu-toggle"></i>
+                    </div>
+                    <div class="menu-item" onclick="window.location.href='Account.html'">
+                        <i class="fas fa-users"></i>
+                        <span>Accounts</span>
+                        <i class="fas fa-chevron-right submenu-toggle"></i>
+                    </div>
+                    <div class="menu-item">
+                        <i class="fas fa-file-alt"></i>
+                        <span>CMS</span>
+                        <i class="fas fa-chevron-right submenu-toggle"></i>
+                    </div>
+                    <div class="menu-item" onclick="window.location.href='blogmanagement.html'">
+                        <i class="fas fa-blog"></i>
+                        <span>Blog</span>
+                        <i class="fas fa-chevron-right submenu-toggle"></i>
+                    </div>
+                    <div class="menu-item" onclick="window.location.href='cars.html'">
+                        <i class="fas fa-car"></i>
+                        <span>Cars</span>
+                        <i class="fas fa-chevron-right submenu-toggle"></i>
+                    </div>
+                    <div class="menu-item">
+                        <i class="fas fa-hotel"></i>
+                        <span>Hotels</span>
+                        <i class="fas fa-chevron-right submenu-toggle"></i>
+                    </div>
+                    <div class="menu-item">
+                        <i class="fas fa-route"></i>
+                        <span>Tours</span>
+                        <i class="fas fa-chevron-right submenu-toggle"></i>
+                    </div>
+                    <div class="menu-item">
+                        <i class="fas fa-tag"></i>
+                        <span>Offers</span>
+                        <i class="fas fa-chevron-right submenu-toggle"></i>
+                    </div>
+                    <div class="menu-item">
+                        <i class="fas fa-ticket-alt"></i>
+                        <span>Coupons</span>
+                    </div>
+                    <div class="menu-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Locations</span>
+                    </div>
+                    <div class="menu-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>Newsletter</span>
+                    </div>
+                    <div class="menu-item" onclick="window.location.href='booking.html'">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Bookings</span>
+                    </div>
+                </div>
+            </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <div class="header-left">
+                    <div class="hamburger">≡</div>
+                    <div class="date-time">17:00:26 | 8 April 2025</div>
+                </div>
+                <div class="header-right">
+                    ▼
+                </div>
+            </div>
+            
+            
+            <!-- Quick Action Buttons -->
+            <div class="quick-actions">
+                <a href="quickBooking.html" class="action-btn primary">
+                    <i class="fas fa-calendar-plus"></i>
+                    Quick Booking
+                </a>
+                <a href="bookingManagement.html" class="action-btn primary">
+                    <i class="fas fa-calendar-check"></i>
+                    Bookings
+                </a>
+                <a href="#" class="action-btn secondary">
+                    <i class="fas fa-file-alt"></i>
+                    CMS Pages
+                </a>
+                <a href="blogmanagement.html" class="action-btn secondary">
+                    <i class="fas fa-blog"></i>
+                    Blog
+                </a>
+                <a href="Newslatter.html" class="action-btn warning">
+                    <i class="fas fa-envelope"></i>
+                    Send Newsletter
+                </a>
+                <a href="backup.html" class="action-btn danger">
+                    <i class="fas fa-database"></i>
+                    Backup Database
+                </a>
+            </div>
+            
+            <!-- Dashboard Stats -->
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <h3>Today's Booking</h3>
+                    <div class="stat-circle">
+                        <svg width="150" height="150" viewBox="0 0 150 150">
+                            <circle cx="75" cy="75" r="65" fill="none" stroke="#ecf0f1" stroke-width="10"/>
+                            <circle cx="75" cy="75" r="65" fill="none" stroke="#2ecc71" stroke-width="10" 
+                                    stroke-dasharray="408.4" stroke-dashoffset="306.3" transform="rotate(-90 75 75)"/>
+                        </svg>
+                        <span class="stat-circle-value">0</span>
+                    </div>
+                    <div class="stat-details">
+                        <span>Yesterday's: 0</span>
+                    </div>
+                    <div class="stat-details">
+                        <span class="paid">Paid: 0</span>
+                        <span class="unpaid">Unpaid: 0</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>Last 30 Day's</h3>
+                    <div class="stat-circle">
+                        <svg width="150" height="150" viewBox="0 0 150 150">
+                            <circle cx="75" cy="75" r="65" fill="none" stroke="#ecf0f1" stroke-width="10"/>
+                            <circle cx="75" cy="75" r="65" fill="none" stroke="#f39c12" stroke-width="10" 
+                                    stroke-dasharray="408.4" stroke-dashoffset="306.3" transform="rotate(-90 75 75)"/>
+                        </svg>
+                        <span class="stat-circle-value">0</span>
+                    </div>
+                    <div class="stat-details">
+                        <span>Last 60 Day's: 0</span>
+                    </div>
+                    <div class="stat-details">
+                        <span class="paid">Paid: 0</span>
+                        <span class="unpaid">Unpaid: 0</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>Last 90 Day's</h3>
+                    <div class="stat-circle">
+                        <svg width="150" height="150" viewBox="0 0 150 150">
+                            <circle cx="75" cy="75" r="65" fill="none" stroke="#ecf0f1" stroke-width="10"/>
+                            <circle cx="75" cy="75" r="65" fill="none" stroke="#e74c3c" stroke-width="10" 
+                                    stroke-dasharray="408.4" stroke-dashoffset="306.3" transform="rotate(-90 75 75)"/>
+                        </svg>
+                        <span class="stat-circle-value">0</span>
+                    </div>
+                    <div class="stat-details">
+                        <span>Last 180 Day's: 0</span>
+                    </div>
+                    <div class="stat-details">
+                        <span class="paid">Paid: 0</span>
+                        <span class="unpaid">Unpaid: 0</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Revenue Chart -->
+            <div class="dashboard">
+                <div class="header">
+                  <h1 class="title">Revenue Overview</h1>
+                  <div class="period-selector">
+                    <button class="period-btn" data-period="week">Week</button>
+                    <button class="period-btn active" data-period="month">Month</button>
+                    <button class="period-btn" data-period="quarter">Quarter</button>
+                    <button class="period-btn" data-period="year">Year</button>
+                  </div>
+                </div>
+                
+                <div class="revenue-overview">
+                  <div class="revenue-card">
+                    <div class="card-label">Total Revenue</div>
+                    <div class="card-value">$89,456</div>
+                    <div class="trend up">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 4L12.5 8.5L11.1 9.9L8.5 7.3V12H7.5V7.3L4.9 9.9L3.5 8.5L8 4Z" fill="currentColor"/>
+                      </svg>
+                      <span>12.5% vs last month</span>
+                    </div>
+                  </div>
+                  
+                  <div class="revenue-card">
+                    <div class="card-label">Average Order Value</div>
+                    <div class="card-value">$124.32</div>
+                    <div class="trend up">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 4L12.5 8.5L11.1 9.9L8.5 7.3V12H7.5V7.3L4.9 9.9L3.5 8.5L8 4Z" fill="currentColor"/>
+                      </svg>
+                      <span>3.2% vs last month</span>
+                    </div>
+                  </div>
+                  
+                  <div class="revenue-card">
+                    <div class="card-label">Conversion Rate</div>
+                    <div class="card-value">2.8%</div>
+                    <div class="trend down">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 12L3.5 7.5L4.9 6.1L7.5 8.7V4H8.5V8.7L11.1 6.1L12.5 7.5L8 12Z" fill="currentColor"/>
+                      </svg>
+                      <span>0.5% vs last month</span>
+                    </div>
+                  </div>
+                  
+                  <div class="revenue-card">
+                    <div class="card-label">Total Orders</div>
+                    <div class="card-value">720</div>
+                    <div class="trend up">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 4L12.5 8.5L11.1 9.9L8.5 7.3V12H7.5V7.3L4.9 9.9L3.5 8.5L8 4Z" fill="currentColor"/>
+                      </svg>
+                      <span>8.7% vs last month</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="chart-container">
+                  <canvas id="revenueChart"></canvas>
+                </div>
+                
+                <div class="sources-container">
+                  <h2 class="sources-title">Revenue Sources</h2>
+                  <div class="source-row">
+                    <div class="source-name">
+                      <div class="source-indicator" style="background-color: #4a6cf7;"></div>
+                      <span>Direct Sales</span>
+                    </div>
+                    <div class="source-value">$45,230 (50.6%)</div>
+                  </div>
+                  <div class="source-row">
+                    <div class="source-name">
+                      <div class="source-indicator" style="background-color: #10b981;"></div>
+                      <span>Online Marketplace</span>
+                    </div>
+                    <div class="source-value">$28,560 (31.9%)</div>
+                  </div>
+                  <div class="source-row">
+                    <div class="source-name">
+                      <div class="source-indicator" style="background-color: #f59e0b;"></div>
+                      <span>Affiliate Partners</span>
+                    </div>
+                    <div class="source-value">$12,780 (14.3%)</div>
+                  </div>
+                  <div class="source-row">
+                    <div class="source-name">
+                      <div class="source-indicator" style="background-color: #ef4444;"></div>
+                      <span>Other</span>
+                    </div>
+                    <div class="source-value">$2,886 (3.2%)</div>
+                  </div>
+                </div>
+              </div>
+            
+            
+            <!-- Recent Bookings -->
+            <div class="bookings-table">
+                <h3>Recent Bookings</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selectAll"></th>
+                            <th>#</th>
+                            <th>ID</th>
+                            <th>Ref No.</th>
+                            <th>Customer</th>
+                            <th>Module</th>
+                            <th>Date</th>
+                            <th>Total</th>
+                            <th>Paid</th>
+                            <th>Remaining</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>1</td>
+                            <td>14</td>
+                            <td>5267</td>
+                            <td>Customer</td>
+                            <td>tours</td>
+                            <td>22/06/2021</td>
+                            <td>123900</td>
+                            <td>18585</td>
+                            <td>105315</td>
+                            <td><span class="status-badge status-paid">Paid</span></td>
+                            <td>
+                                <div class="action-icons">
+                                    <a href="#" class="view"><i class="fas fa-search"></i></a>
+                                    <a href="#" class="edit"><i class="fas fa-edit"></i></a>
+                                    <a href="#" class="delete"><i class="fas fa-times"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>2</td>
+                            <td>12</td>
+                            <td>2564</td>
+                            <td>customer</td>
+                            <td>hotels</td>
+                            <td>03/05/2018</td>
+                            <td>462</td>
+                            <td>0</td>
+                            <td>462</td>
+                            <td><span class="status-badge status-unpaid">Unpaid</span></td>
+                            <td>
+                                <div class="action-icons">
+                                    <a href="#" class="view"><i class="fas fa-search"></i></a>
+                                    <a href="#" class="edit"><i class="fas fa-edit"></i></a>
+                                    <a href="#" class="delete"><i class="fas fa-times"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>3</td>
+                            <td>9</td>
+                            <td>8453</td>
+                            <td>Test Booking</td>
+                            <td>hotels</td>
+                            <td>15/11/2016</td>
+                            <td>275</td>
+                            <td>0</td>
+                            <td>275</td>
+                            <td><span class="status-badge status-unpaid">Unpaid</span></td>
+                            <td>
+                                <div class="action-icons">
+                                    <a href="#" class="view"><i class="fas fa-search"></i></a>
+                                    <a href="#" class="edit"><i class="fas fa-edit"></i></a>
+                                    <a href="#" class="delete"><i class="fas fa-times"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>4</td>
+                            <td>8</td>
+                            <td>1344</td>
+                            <td>customer</td>
+                            <td>hotels</td>
+                            <td>28/10/2016</td>
+                            <td>1650</td>
+                            <td>0</td>
+                            <td>1650</td>
+                            <td><span class="status-badge status-unpaid">Unpaid</span></td>
+                            <td>
+                                <div class="action-icons">
+                                    <a href="#" class="view"><i class="fas fa-search"></i></a>
+                                    <a href="#" class="edit"><i class="fas fa-edit"></i></a>
+                                    <a href="#" class="delete"><i class="fas fa-times"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>5</td>
+                            <td>7</td>
+                            <td>0745</td>
+                            <td>customer</td>
+                            <td>tours</td>
+                            <td>24/10/2016</td>
+                            <td>308</td>
+                            <td>30.8</td>
+                            <td>277.2</td>
+                            <td><span class="status-badge status-paid">Paid</span></td>
+                            <td>
+                                <div class="action-icons">
+                                    <a href="#" class="view"><i class="fas fa-search"></i></a>
+                                    <a href="#" class="edit"><i class="fas fa-edit"></i></a>
+                                    <a href="#" class="delete"><i class="fas fa-times"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="pagination">
+                    <button class="active">10</button>
+                    <button>25</button>
+                    <button>50</button>
+                    <button>100</button>
+                    <button>All</button>
+                    <button>Search</button>
+                </div>
+            </div>
+            
+            <!-- Visit Statistics of april Chart -->
+            <div class="dashboard-container">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Visit Statistics of April</h3>
+                        <button class="reset-btn" onclick="resetChart()">Reset Chart</button>
+                    </div>
+                    
+                    <div class="chart-body">
+                        <div class="legend">
+                            <div class="legend-item">
+                                <div class="legend-color unique"></div>
+                                <span>Unique</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color total"></div>
+                                <span>Total Hits</span>
+                            </div>
+                        </div>
+                        
+                        <svg id="chart" class="chart-svg"></svg>
+                        
+                        <div class="execution-info">Execution time: 0.119 s · Memory usage: 0.38 MB</div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+ 
+</body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script>
+        // Display current date and time on page load
+        function updateDateTime() {
+        const now = new Date();
+        let hours = now.getHours();
+        let minutes = now.getMinutes();
+        let seconds = now.getSeconds();
+
+        // Add leading zeros
+        hours = hours < 10 ? '0' + hours : hours;
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        seconds = seconds < 10 ? '0' + seconds : seconds;
+
+        const timeString = `${hours}:${minutes}:${seconds}`;
+
+        // Dynamically get the current date
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const dateString = now.toLocaleDateString('en-US', options);
+
+        // Update content
+        document.querySelector('.date-time').textContent = `${timeString} | ${dateString}`;
+        }
+
+        // Call the function on page load and every second
+        document.addEventListener('DOMContentLoaded', function () {
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+        });
+
+        // Revenue Overview
+
+         // Chart initialization
+    const ctx = document.getElementById('revenueChart').getContext('2d');
+    
+    // Data for different time periods
+    const chartData = {
+      week: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        datasets: [
+          {
+            label: 'Current Week',
+            data: [4500, 5200, 4800, 6000, 8500, 7300, 6500],
+            borderColor: '#4a6cf7',
+            backgroundColor: 'rgba(74, 108, 247, 0.1)',
+            fill: true,
+            tension: 0.4
+          },
+          {
+            label: 'Previous Week',
+            data: [4200, 4800, 4500, 5500, 7000, 6800, 6000],
+            borderColor: '#10b981',
+            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+            fill: true,
+            tension: 0.4
+          }
+        ]
+      },
+      month: {
+        labels: ['01', '05', '10', '15', '20', '25', '30'],
+        datasets: [
+          {
+            label: 'Current Month',
+            data: [18500, 22000, 24500, 32000, 38000, 42500, 45000],
+            borderColor: '#4a6cf7',
+            backgroundColor: 'rgba(74, 108, 247, 0.1)',
+            fill: true,
+            tension: 0.4
+          },
+          {
+            label: 'Previous Month',
+            data: [16000, 19500, 22000, 28000, 33000, 38000, 40000],
+            borderColor: '#10b981',
+            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+            fill: true,
+            tension: 0.4
+          }
+        ]
+      },
+      quarter: {
+        labels: ['Jan', 'Feb', 'Mar'],
+        datasets: [
+          {
+            label: 'Current Quarter',
+            data: [85000, 92000, 105000],
+            borderColor: '#4a6cf7',
+            backgroundColor: 'rgba(74, 108, 247, 0.1)',
+            fill: true,
+            tension: 0.4
+          },
+          {
+            label: 'Previous Quarter',
+            data: [78000, 85000, 95000],
+            borderColor: '#10b981',
+            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+            fill: true,
+            tension: 0.4
+          }
+        ]
+      },
+      year: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        datasets: [
+          {
+            label: 'Current Year',
+            data: [85000, 92000, 105000, 110000, 118000, 125000, 132000, 140000, 148000, 155000, 162000, 170000],
+            borderColor: '#4a6cf7',
+            backgroundColor: 'rgba(74, 108, 247, 0.1)',
+            fill: true,
+            tension: 0.4
+          },
+          {
+            label: 'Previous Year',
+            data: [78000, 85000, 95000, 100000, 105000, 112000, 118000, 125000, 132000, 140000, 145000, 152000],
+            borderColor: '#10b981',
+            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+            fill: true,
+            tension: 0.4
+          }
+        ]
+      }
+    };
+    
+    // Create initial chart
+    let revenueChart = new Chart(ctx, {
+      type: 'line',
+      data: chartData.month,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: {
+              boxWidth: 10,
+              usePointStyle: true,
+              pointStyle: 'circle'
+            }
+          },
+          tooltip: {
+            mode: 'index',
+            intersect: false,
+            callbacks: {
+              label: function(context) {
+                let label = context.dataset.label || '';
+                if (label) label += ': ';
+                if (context.parsed.y !== null) {
+                  label += new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 0
+                  }).format(context.parsed.y);
+                }
+                return label;
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: {
+              display: false
+            },
+            ticks: {
+              font: {
+                size: 12
+              }
+            }
+          },
+          y: {
+            beginAtZero: true,
+            grid: {
+              borderDash: [2, 2]
+            },
+            ticks: {
+              font: {
+                size: 12
+              },
+              callback: function(value) {
+                return '$' + value.toLocaleString();
+              }
+            }
+          }
+        },
+        elements: {
+          point: {
+            radius: 4,
+            hoverRadius: 6
+          }
+        },
+        interaction: {
+          mode: 'nearest',
+          axis: 'x',
+          intersect: false
+        }
+      }
+    });
+    
+    // Chart height adjustment
+    const setChartHeight = () => {
+      const chartContainer = document.querySelector('.chart-container');
+      if (window.innerWidth <= 768) {
+        chartContainer.style.height = '300px';
+      } else {
+        chartContainer.style.height = '400px';
+      }
+    };
+    
+    setChartHeight();
+    window.addEventListener('resize', setChartHeight);
+    
+    // Period selector functionality
+    const periodButtons = document.querySelectorAll('.period-btn');
+    
+    periodButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        // Remove active class from all buttons
+        periodButtons.forEach(btn => btn.classList.remove('active'));
+        
+        // Add active class to clicked button
+        this.classList.add('active');
+        
+        // Update chart with new data
+        const period = this.getAttribute('data-period');
+        revenueChart.data = chartData[period];
+        revenueChart.update();
+      });
+    });
+
+    // Visit Statistics of April
+     // Chart data
+     const data = [
+            { day: 1, unique: 0, total: 0 },
+            { day: 2, unique: 0, total: 0 },
+            { day: 3, unique: 0, total: 0 },
+            { day: 4, unique: 0, total: 0 },
+            { day: 5, unique: 0, total: 0 },
+            { day: 6, unique: 0, total: 0 },
+            { day: 7, unique: 0, total: 0 },
+            { day: 8, unique: 30, total: 37 },
+            { day: 9, unique: 9, total: 43 }
+        ];
+
+        // Chart rendering
+        function renderChart() {
+            const svg = document.getElementById('chart');
+            svg.innerHTML = '';
+            
+            const width = svg.clientWidth;
+            const height = svg.clientHeight;
+            const margin = { top: 20, right: 20, bottom: 50, left: 50 };
+            const chartWidth = width - margin.left - margin.right;
+            const chartHeight = height - margin.top - margin.bottom;
+            
+            // Maximum value for Y axis
+            const maxValue = 60;
+            
+            // Create main group element
+            const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            g.setAttribute('transform', `translate(${margin.left},${margin.top})`);
+            svg.appendChild(g);
+            
+            // Create Y axis
+            const yScale = chartHeight / maxValue;
+            
+            // Y axis line
+            const yAxisLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            yAxisLine.setAttribute('x1', 0);
+            yAxisLine.setAttribute('y1', 0);
+            yAxisLine.setAttribute('x2', 0);
+            yAxisLine.setAttribute('y2', chartHeight);
+            yAxisLine.setAttribute('stroke', '#ddd');
+            g.appendChild(yAxisLine);
+            
+            // Y axis ticks and labels
+            const yTicks = [0, 20, 40, 60];
+            yTicks.forEach(tick => {
+                const y = chartHeight - (tick * yScale);
+                
+                // Tick line
+                const tickLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                tickLine.setAttribute('x1', -5);
+                tickLine.setAttribute('y1', y);
+                tickLine.setAttribute('x2', 0);
+                tickLine.setAttribute('y2', y);
+                tickLine.setAttribute('stroke', '#ddd');
+                g.appendChild(tickLine);
+                
+                // Grid line
+                const gridLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                gridLine.setAttribute('x1', 0);
+                gridLine.setAttribute('y1', y);
+                gridLine.setAttribute('x2', chartWidth);
+                gridLine.setAttribute('y2', y);
+                gridLine.setAttribute('stroke', '#eee');
+                gridLine.setAttribute('stroke-dasharray', '2,2');
+                g.appendChild(gridLine);
+                
+                // Label
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', -10);
+                text.setAttribute('y', y);
+                text.setAttribute('dy', '0.3em');
+                text.setAttribute('text-anchor', 'end');
+                text.setAttribute('fill', '#666');
+                text.setAttribute('font-size', '12');
+                text.textContent = tick;
+                g.appendChild(text);
+            });
+            
+            // Y axis label
+            const yLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            yLabel.setAttribute('transform', `translate(-35,${chartHeight/2}) rotate(-90)`);
+            yLabel.setAttribute('text-anchor', 'middle');
+            yLabel.setAttribute('fill', '#666');
+            yLabel.setAttribute('font-size', '13');
+            yLabel.textContent = 'Visits';
+            g.appendChild(yLabel);
+            
+            // Create X axis
+            const barWidth = chartWidth / data.length;
+            
+            // X axis line
+            const xAxisLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            xAxisLine.setAttribute('x1', 0);
+            xAxisLine.setAttribute('y1', chartHeight);
+            xAxisLine.setAttribute('x2', chartWidth);
+            xAxisLine.setAttribute('y2', chartHeight);
+            xAxisLine.setAttribute('stroke', '#ddd');
+            g.appendChild(xAxisLine);
+            
+            // X axis labels
+            data.forEach((item, index) => {
+                const x = (index * barWidth) + (barWidth / 2);
+                
+                // Tick line
+                const tickLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                tickLine.setAttribute('x1', x);
+                tickLine.setAttribute('y1', chartHeight);
+                tickLine.setAttribute('x2', x);
+                tickLine.setAttribute('y2', chartHeight + 5);
+                tickLine.setAttribute('stroke', '#ddd');
+                g.appendChild(tickLine);
+                
+                // Label
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', x);
+                text.setAttribute('y', chartHeight + 20);
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('fill', '#666');
+                text.setAttribute('font-size', '12');
+                text.textContent = item.day;
+                g.appendChild(text);
+            });
+            
+            // X axis label
+            const xLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            xLabel.setAttribute('x', chartWidth / 2);
+            xLabel.setAttribute('y', chartHeight + 40);
+            xLabel.setAttribute('text-anchor', 'middle');
+            xLabel.setAttribute('fill', '#666');
+            xLabel.setAttribute('font-size', '13');
+            xLabel.textContent = 'April';
+            g.appendChild(xLabel);
+            
+            // Create bars
+            data.forEach((item, index) => {
+                const x = (index * barWidth) + (barWidth * 0.25);
+                const uniqueBarWidth = barWidth * 0.2;
+                const totalBarWidth = barWidth * 0.2;
+                const spacing = barWidth * 0.1;
+                
+                // Unique visits bar
+                if (item.unique > 0) {
+                    const uniqueHeight = item.unique * yScale;
+                    const uniqueBar = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                    uniqueBar.setAttribute('x', x);
+                    uniqueBar.setAttribute('y', chartHeight - uniqueHeight);
+                    uniqueBar.setAttribute('width', uniqueBarWidth);
+                    uniqueBar.setAttribute('height', uniqueHeight);
+                    uniqueBar.setAttribute('class', 'bar-unique');
+                    g.appendChild(uniqueBar);
+                    
+                    // Value label
+                    const uniqueText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    uniqueText.setAttribute('x', x + (uniqueBarWidth / 2));
+                    uniqueText.setAttribute('y', chartHeight - uniqueHeight - 5);
+                    uniqueText.setAttribute('class', 'bar-value');
+                    uniqueText.textContent = item.unique;
+                    g.appendChild(uniqueText);
+                }
+                
+                // Total hits bar
+                if (item.total > 0) {
+                    const totalHeight = item.total * yScale;
+                    const totalBar = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                    totalBar.setAttribute('x', x + uniqueBarWidth + spacing);
+                    totalBar.setAttribute('y', chartHeight - totalHeight);
+                    totalBar.setAttribute('width', totalBarWidth);
+                    totalBar.setAttribute('height', totalHeight);
+                    totalBar.setAttribute('class', 'bar-total');
+                    g.appendChild(totalBar);
+                    
+                    // Value label
+                    const totalText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    totalText.setAttribute('x', x + uniqueBarWidth + spacing + (totalBarWidth / 2));
+                    totalText.setAttribute('y', chartHeight - totalHeight - 5);
+                    totalText.setAttribute('class', 'bar-value');
+                    totalText.textContent = item.total;
+                    g.appendChild(totalText);
+                }
+            });
+        }
+
+        // Reset chart function
+        function resetChart() {
+            alert('Chart data has been reset');
+            renderChart();
+        }
+
+        // Initial render and window resize handler
+        window.addEventListener('load', renderChart);
+        window.addEventListener('resize', renderChart);
+    </script>
+</html>

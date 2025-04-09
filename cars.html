@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Car Models</title>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f3f4f6;
+}
+
+header {
+  background-color: #000;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+.car-listing {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.car-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 10px;
+}
+
+.car-card img {
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+.car-card h2 {
+  margin: 10px 0;
+}
+
+.car-card p {
+  margin: 5px 0;
+  color: #666;
+}
+
+footer {
+  text-align: center;
+  padding: 10px;
+  background-color: #000;
+  color: white;
+}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Car Models</h1>
+  </header>
+  <main>
+    <section class="car-listing">
+      <article class="car-card">
+        <img src="nissan-xtrail.jpg" alt="Nissan X-Trail">
+        <h2>Nissan X-Trail</h2>
+        <p>⭐⭐⭐⭐⭐</p>
+        <p>Location: Muscat</p>
+      </article>
+      <article class="car-card">
+        <img src="toyota-camry.jpg" alt="Toyota Camry 2015">
+        <h2>Toyota Camry 2015</h2>
+        <p>⭐⭐⭐⭐</p>
+        <p>Location: Hoonani</p>
+      </article>
+      <!-- Add more car models as needed -->
+    </section>
+  </main>
+  <footer>
+    <p>© 2025 CarHub. All Rights Reserved.</p>
+  </footer>
+</body>
+</html>

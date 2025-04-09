@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Newsletter Management</title>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+header {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+main {
+  width: 90%;
+  margin: 20px auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+thead {
+  background-color: #666;
+  color: white;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+tr:hover {
+  background-color: #f1f1f1;
+}
+
+button {
+  margin: 5px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button.view {
+  background-color: #00bfff;
+  color: white;
+}
+
+button.edit {
+  background-color: #ffa500;
+  color: white;
+}
+
+button.delete {
+  background-color: #ff4c4c;
+  color: white;
+}
+
+button.send-newsletter {
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+}
+
+button.export-data {
+  background-color: #0078d4;
+  color: white;
+  font-weight: bold;
+}
+
+footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px;
+}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Newsletter Management System</h1>
+  </header>
+  <main>
+    <table id="subscribers-table">
+      <thead>
+        <tr>
+          <th>Select</th>
+          <th>#</th>
+          <th>Email</th>
+          <th>Type</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td>1</td>
+          <td>Rishabh1@example.com</td>
+          <td>Guest</td>
+          <td>Active</td>
+          <td>
+            <button class="view">View</button>
+            <button class="edit">Edit</button>
+            <button class="delete">Delete</button>
+          </td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td>2</td>
+          <td>pawan@example.com</td>
+          <td>Subscriber</td>
+          <td>Active</td>
+          <td>
+            <button class="view">View</button>
+            <button class="edit">Edit</button>
+            <button class="delete">Delete</button>
+          </td>
+        </tr>
+        <tr>
+            <td><input type="checkbox"></td>
+            <td>3</td>
+            <td>manish@example.com</td>
+            <td>Subscriber</td>
+            <td>Active</td>
+            <td>
+              <button class="view">View</button>
+              <button class="edit">Edit</button>
+              <button class="delete">Delete</button>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+    <div class="controls">
+      <button class="send-newsletter">Send Newsletter</button>
+      <button class="export-data">Export to CSV</button>
+    </div>
+  </main>
+  <footer>
+    <p>© 2025 Newsletter Management System. All Rights Reserved.</p>
+  </footer>
+</body>
+</html>

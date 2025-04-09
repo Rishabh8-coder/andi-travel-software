@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Form</title>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f5f5f5;
+}
+
+header {
+  background-color: pink;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+main {
+  padding: 20px;
+}
+
+form {
+  max-width: 500px;
+  margin: 0 auto;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+input, textarea, button {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  background-color: #00d7;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0053;
+}
+
+footer {
+  text-align: center;
+  padding: 10px;
+  background-color: #0078;
+  color: white;
+}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Booking Application</h1>
+  </header>
+  <main>
+    <form id="booking-form">
+      <label for="name">Full Name:</label>
+      <input type="text" id="name" name="name" placeholder="Enter your name" required>
+
+      <label for="email">Email Address:</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+      <label for="phone">Phone Number:</label>
+      <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+
+      <label for="date">Booking Date:</label>
+      <input type="date" id="date" name="date" required>
+
+      <label for="requests">Additional Requests:</label>
+      <textarea id="requests" name="requests" placeholder="Enter any special requests..." rows="4"></textarea>
+
+      <button type="submit">Submit Booking</button>
+    </form>
+  </main>
+  <footer>
+    <p>© 2025 BookingApp. All Rights Reserved.</p>
+  </footer>
+</body>
+</html>
